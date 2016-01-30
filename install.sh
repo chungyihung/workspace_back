@@ -1,0 +1,25 @@
+#!/bin/bash
+
+VUNDLE=vundles.vim
+VIMRC=.vimrc
+TMUXCONFIG=.tmux.conf
+
+VIMDIR=~/.vim
+CONFIGDIR=./config
+
+VIMRCPATH=~/$VIMRC
+VUNDLEPATH=$VIMDIR/$VUNDLE
+TMUXCONFIGPATH=~/$TMUXCONFIG
+
+if [ "$1" == "backup" ]; then
+echo $VIMRCPATH
+echo $CONFIGDIR/$VIMRC
+rsync -avP $VIMRCPATH $CONFIGDIR/$VIMRC
+rsync -avP $VUNDLEPATH $CONFIGDIR/$VUNDLE
+rsync -avP $TMUXCONFIGPATH $CONFIGDIR/$TMUXCONFIG
+elif [ "$1" == "restore" ]; then
+echo wefwfef
+rsync -avP $CONFIGDIR/$VIMRC $VIMRCPATH
+rsync -avP $CONFIGDIR/$VUNDLE $VUNDLEPATH
+rsync -avP $CONFIGDIR/$TMUXCONFIG $TMUXCONFIGPATH
+fi
