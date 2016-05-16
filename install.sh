@@ -1,25 +1,38 @@
 #!/bin/bash
 
+# Specific config files
 VUNDLE=vundles.vim
 VIMRC=.vimrc
 TMUXCONFIG=.tmux.conf
+BASHRC=.bashrc
+PROFILERC=.profile
 
+# some specific folders
 VIMDIR=~/.vim
 CONFIGDIR=./config
 
+# Path of target files
 VIMRCPATH=~/$VIMRC
 VUNDLEPATH=$VIMDIR/$VUNDLE
 TMUXCONFIGPATH=~/$TMUXCONFIG
+BASHRCPATH=~/$BASHRC
+PROFILERCPATH=~/$PROFILERC
 
+
+# rsync -avP [SRC] [TARGET]
 if [ "$1" == "backup" ]; then
 echo $VIMRCPATH
 echo $CONFIGDIR/$VIMRC
 rsync -avP $VIMRCPATH $CONFIGDIR/$VIMRC
 rsync -avP $VUNDLEPATH $CONFIGDIR/$VUNDLE
 rsync -avP $TMUXCONFIGPATH $CONFIGDIR/$TMUXCONFIG
+rsync -avP $BASHRCPATH $CONFIGDIR/$BASHRC
+rsync -avP $PROFILERCPATH $CONFIGDIR/$PROFILERC
 elif [ "$1" == "restore" ]; then
-echo wefwfef
+echo starting restore
 rsync -avP $CONFIGDIR/$VIMRC $VIMRCPATH
 rsync -avP $CONFIGDIR/$VUNDLE $VUNDLEPATH
 rsync -avP $CONFIGDIR/$TMUXCONFIG $TMUXCONFIGPATH
+rsync -avP $CONFIGDIR/$BASHRC $BASHRCPATH
+rsync -avP $CONFIGDIR/$PROFILERCPATH $PROFILERCPATH
 fi
