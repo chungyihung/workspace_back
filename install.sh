@@ -1,38 +1,37 @@
 #!/bin/bash
 
-# Specific config files
-VUNDLE=vundles.vim
-VIMRC=.vimrc
-TMUXCONFIG=.tmux.conf
-BASHRC=.bashrc
-PROFILERC=.profile
-
-# some specific folders
-VIMDIR=~/.vim
+filelist=./file_list
 CONFIGDIR=./config
+USERHOME=/home/$USER
 
-# Path of target files
-VIMRCPATH=~/$VIMRC
-VUNDLEPATH=$VIMDIR/$VUNDLE
-TMUXCONFIGPATH=~/$TMUXCONFIG
-BASHRCPATH=~/$BASHRC
-PROFILERCPATH=~/$PROFILERC
+showtip() {
+    echo -e "Usage: \t./install.sh backup"
+    echo -e "\t./install.sh restore"
+}
 
+while read myline; do
+    if [ "${myline:0:1}" != "#" ]; then
+        filename=`basename $myline`
+        if [ "${myline:0:2}" == "~/" ]; then
+            file_abs_path=$USERHOME/${myline:2}
+        else
+            file_abs_path=$myline
+        fi
 
-# rsync -avP [SRC] [TARGET]
-if [ "$1" == "backup" ]; then
-echo $VIMRCPATH
-echo $CONFIGDIR/$VIMRC
-rsync -avP $VIMRCPATH $CONFIGDIR/$VIMRC
-rsync -avP $VUNDLEPATH $CONFIGDIR/$VUNDLE
-rsync -avP $TMUXCONFIGPATH $CONFIGDIR/$TMUXCONFIG
-rsync -avP $BASHRCPATH $CONFIGDIR/$BASHRC
-rsync -avP $PROFILERCPATH $CONFIGDIR/$PROFILERC
-elif [ "$1" == "restore" ]; then
-echo starting restore
-rsync -avP $CONFIGDIR/$VIMRC $VIMRCPATH
-rsync -avP $CONFIGDIR/$VUNDLE $VUNDLEPATH
-rsync -avP $CONFIGDIR/$TMUXCONFIG $TMUXCONFIGPATH
-rsync -avP $CONFIGDIR/$BASHRC $BASHRCPATH
-rsync -avP $CONFIGDIR/$PROFILERCPATH $PROFILERCPATH
-fi
+        if [ "$1" == "backup" ]; then
+            srcfile=$file_abs_path
+            tarfile=$CONFIGDIR/$filename
+        elif [ "$1" == "restore" ]; then
+            tarfile=$file_abs_path
+            srcfile=$CONFIGDIR/$filename
+        else
+            showtip
+            exit
+        fi
+
+        echo srcfile = $srcfile
+        echo tarfile = $tarfile
+        rsync -avP $srcfile $tarfile
+        md5sum $srcfile $tarfile
+    fi
+done < $filelist

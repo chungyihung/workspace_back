@@ -1,0 +1,6 @@
+# file list with complete path
+~/.vimrc
+~/.vim/vundles.vim
+~/.tmux.conf
+~/.bashrc
+~/.profile
