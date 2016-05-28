@@ -9,6 +9,11 @@ showtip() {
     echo -e "\t./install.sh restore"
 }
 
+if [ "$1" != "backup" ]  && [ "$1" != "restore" ]; then
+    showtip
+    exit
+fi
+
 while read myline; do
     if [ "${myline:0:1}" != "#" ]; then
         filename=`basename $myline`
