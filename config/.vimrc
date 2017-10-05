@@ -145,8 +145,8 @@ nmap <F6> :TrinityToggleTagList<CR>
 nmap <F7> :TrinityToggleNERDTree<CR>
 
 " -----------------------------Tab Navigation Mapping---------------------------------------------
-nnoremap <C-k> :tabprevious<CR>
-nnoremap <C-j>   :tabnext<CR>
+nnoremap <C-j>   :tabprevious<CR>
+nnoremap <C-k>   :tabnext<CR>
 map <C-n> <Esc>:tabnew<CR>
 "map <C-PageUp> <Esc>:tabprev<CR>
 "map <C-PageDown> <Esc>:tabnext<CR>
