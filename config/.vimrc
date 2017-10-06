@@ -59,6 +59,20 @@ let g:ycm_echo_current_diagnostic = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 " -----------------------------CSCOPE Setting ------------------------------------
+" From: http://vim.wikia.com/wiki/Autoloading_Cscope_Database
+function! LoadCscope()
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    let path = strpart(db, 0, match(db, "/cscope.out$"))
+    set nocscopeverbose " suppress 'duplicate connection' error
+    exe "cs add " . db . " " . path
+    set cscopeverbose
+  " else add the database pointed to by environment variable
+  elseif $CSCOPE_DB != ""
+    cs add $CSCOPE_DB
+  endif
+endfunction
+au BufEnter /* call LoadCscope()
 
 " ----------------------------- UltiSnips ------------------------------------
 let g:UltiSnipsExpandTrigger="<c-j>"
@@ -68,7 +82,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-d>"
 " -----------------------------General Settings-------------------------------------
 set encoding=utf-8
 set langmenu=zh_TW.UTF-8
-language message zh_TW.UTF-8
+"language message zh_TW.UTF-8
 set nocompatible		"
 set bs=2				"
 set mouse=nv			" 設定滑鼠在all mode (a) 都可使用
@@ -129,20 +143,21 @@ let g:NERDTreeDirArrows=1
 "map <silent> <F12> :Tlist<CR>				" 將鍵盤F12設定為快速切換Taglist菜單
 "nnoremap <silent> <F9> :NERDTreeToggle<CR>	" 切換NERD 目錄
 
-map <C-L> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
-map <F9>  :GitGutterToggle<CR>
-" -----------------------------Trinity---------------------------------------------
-" Open and close all the three plugins on the same time
-nmap <F8>  :TrinityToggleAll<CR>
-
+"map <C-L> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
+"
+" -----------------------------Ctags---------------------------------------------
+map <F2> :tag <C-R>=expand("<cword>")<CR><CR>
+" -----------------------------trinity---------------------------------------------
 " Open and close the Source Explorer separately
 nmap <F5>  :TrinityToggleSourceExplorer<CR>
-
 " Open and close the Taglist separately
 nmap <F6> :TrinityToggleTagList<CR>
-
 " Open and close the NERD Tree separately
 nmap <F7> :TrinityToggleNERDTree<CR>
+" Open and close all the three plugins on the same time
+nmap <F8> :TrinityToggleAll<CR>
+" -----------------------------GitGutter---------------------------------------------
+map  <F9> :GitGutterToggle<CR>
 
 " -----------------------------Tab Navigation Mapping---------------------------------------------
 nnoremap <C-j>   :tabprevious<CR>
@@ -162,6 +177,8 @@ map <leader>m :marks<CR>
 set pastetoggle=<leader>p
 "map <C-u> :set fileencoding=utf8
 "map <C-b> :set fileencoding=big5
+nmap <C-/>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+map <leader>r :set cursorcolumn!<CR>
 " ============================================================================================"
 " -- map 說明
 "     map j GG 		" 會使得j 映射成GG

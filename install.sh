@@ -27,8 +27,21 @@ while read myline; do
             srcfile=$file_abs_path
             tarfile=$CONFIGDIR/$filename
         elif [ "$1" == "restore" ]; then
-            tarfile=$file_abs_path
-            srcfile=$CONFIGDIR/$filename
+            # We treat file and folder in different way
+            if [ ! -d "$CONFIGDIR/$filename" ]; then
+                #Sanity check if path exist or not
+                directoryname=`dirname $file_abs_path`
+                if [ ! -d "$directoryname" ]; then
+                    mkdir -p $directoryname
+                fi
+                tarfile=$file_abs_path
+                srcfile=$CONFIGDIR/$filename
+            else
+                directoryname=`dirname $file_abs_path`
+                mkdir -p $file_abs_path
+                tarfile=$directoryname
+                srcfile=$CONFIGDIR/$filename
+            fi
         else
             showtip
             exit
