@@ -53,3 +53,9 @@ while read myline; do
         md5sum $srcfile $tarfile
     fi
 done < $filelist
+
+if [ "$1" == "restore" ]; then
+    if [ ! -d "~/.vim/bundle/vundle.vim" ]; then
+        git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    fi
+fi
