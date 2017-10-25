@@ -2,6 +2,7 @@
 ~/.vimrc
 ~/.vim/vundles.vim
 ~/.vim/plugin/cscope_map.vim
+~/.vim/plugin/taglist.vim
 ~/.tmux.conf
 ~/.bashrc
 ~/.profile
